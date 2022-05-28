@@ -28,7 +28,6 @@ jobs:
           git config user.email "<>"
 
           git checkout --orphan gh-pages
-          git diff
           git add .bundle/config  # because following `git rm --cached` would fail otherwise
           git rm -r --cached -- .
           git add --force docs/
