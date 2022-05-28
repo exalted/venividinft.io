@@ -1,0 +1,35 @@
+<pre id="jekyll-debug-site" class="whitespace-pre bg-gray-300">
+🟢 site:
+{{ site | inspect }}
+</pre>
+
+<pre id="jekyll-debug-page" class="whitespace-pre">
+🟢 page:
+<script>
+  document.getElementById("jekyll-debug-page")
+    .append(JSON.stringify({{ page | jsonify }}, null, 2));
+</script>
+</pre>
+
+<pre id="jekyll-debug-layout" class="whitespace-pre bg-gray-300">
+🟢 layout:
+{{ layout | inspect }}
+</pre>
+
+<pre id="jekyll-debug-content" class="whitespace-pre">
+🟢 content:
+{{ content | inspect }}
+</pre>
+
+<pre id="jekyll-debug-paginator" class="whitespace-pre bg-gray-300">
+🟢 paginator:
+{{ paginator | inspect }}
+</pre>
+
+{% comment %}
+<!-- NOTE: The snippet below would work only if put inside an `include` -->
+<pre id="jekyll-debug-include" class="whitespace-pre">
+🟢 include:
+{{ include | inspect }}
+</pre>
+{% endcomment %}

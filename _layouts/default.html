@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      V E N I&nbsp;&nbsp;V I D I&nbsp;&nbsp;N F T · {{ page.title }}
+    </title>
+
+    {% comment %}
+    <!-- <meta name="description" content="TODO · {{ page.description }}" /> -->
+    {% endcomment %}
+
+    <link href="/styles.css" rel="stylesheet" />
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#11b981" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    {% comment %}
+    <meta name="apple-mobile-web-app-title" content="TODO" />
+    <meta name="application-name" content="TODO" />
+    {% endcomment %}
+    <meta name="msapplication-TileColor" content="#11b981" />
+    <meta name="theme-color" content="#ffffff" />
+  </head>
+
+  <body>
+    <div class="flex flex-col min-h-screen bg-white">
+      <main class="flex-grow">{{ content }}</main>
+      <!-- prettier-ignore -->
+      {% comment %}
+      {% include _debug.html %}
+      {% endcomment %}
+    </div>
+  </body>
+</html>

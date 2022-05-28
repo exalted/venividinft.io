@@ -1,0 +1,37 @@
+on:
+  push:
+    branches: main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # - uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+      - uses: ruby/setup-ruby@v1
+        with:
+          # ruby-version: 2.6 # Not needed with a .ruby-version file
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Run bunch of commands
+        run: |
+          set -x
+
+          npm install
+
+          JEKYLL_ENV=production bundle exec jekyll build
+          NODE_ENV=production npx postcss styles.css --output docs/styles.css
+          ./assetchecksum.sh
+
+          # Ref.: https://lannonbr.com/blog/2019-12-09-git-commit-in-actions
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
+          git checkout --orphan gh-pages
+          git add .bundle/config  # because following `git rm --cached` would fail otherwise
+          git rm -r --cached -- .
+          git add --force docs/
+          git status --short
+
+          git commit --message="Publishing $(git rev-parse --short main) on $(date)"
+          git push --force origin gh-pages

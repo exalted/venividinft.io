@@ -1,0 +1,23 @@
+destination: ./docs
+
+defaults:
+  -
+    # default layout for all pages
+    scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "default"
+
+plugins:
+  - jekyll-optional-front-matter # Markdown files to not require front matter
+
+# jekyll-optional-front-matter
+optional_front_matter:
+  remove_originals: true
+
+exclude:
+  - '/*.config.js'
+  - /assetchecksum.sh
+  - /package*.json
+  - /script/

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+trap "echo 'error: Script failed: see failed command above'" ERR
+
+cd "$(dirname "$0")/.."
+
+npx concurrently --names "jekyll,postcss,prettier" --kill-others \
+  'bundle exec jekyll serve --open-url --livereload' \
+  'npx postcss styles.css --output docs/styles.css --watch' \
+  'npx onchange "**/*.html" "**/*.md" --exclude-path .gitignore -- npx prettier --write {{changed}}' \
+|| true
