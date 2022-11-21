@@ -39,25 +39,40 @@
     <script src="https://cdn.jsdelivr.net/npm/@alch/alchemy-web3@1.4.6/dist/alchemyWeb3.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        let globalWeb3;
-        let globalContract;
-
         const connectButton = document.getElementById("connect-button");
         const mintButton = document.getElementById("mint-button");
-        const totalSupplyElement = document.getElementById("total-supply");
 
-        function getContract() {
-          if (globalContract) {
-            return globalContract;
+        function connectButton_click() {
+          // Request permission from the user to access their accounts in Metamask
+          // https://docs.alchemy.com/alchemy/documentation/alchemy-web3#note-on-using-metamask
+          if (!window.ethereum || !window.ethereum.isMetaMask) {
+            alert(
+              "You don't have Metamask installed. Go to https://metamask.io now to install."
+            );
+            return;
           }
 
-          globalWeb3 = AlchemyWeb3.createAlchemyWeb3(
+          window.ethereum
+            .enable()
+            .then((accounts) => {
+              // Metamask is ready to go!
+              connectButton.removeEventListener("click", connectButton_click);
+              [connectButton, mintButton].forEach((button) =>
+                button.classList.toggle("hidden")
+              );
+            })
+            .catch((reason) => {
+              alert("You rejected the Metamask connection. Try again.");
+            });
+        }
+
+        function mintButton_click() {
+          const web3 = AlchemyWeb3.createAlchemyWeb3(
             "https://eth-rinkeby.alchemyapi.io/v2/445q0e8HYNNlxyMnEsxBkN8yDd4HboHc"
           );
 
           const contractAddress = "0x8CD228Cd5633Df1f2B0949A7A4Bf516995206718";
-
-          globalContract = new globalWeb3.eth.Contract(
+          const contract = new web3.eth.Contract(
             [
               {
                 inputs: [],
@@ -595,101 +610,14 @@
             contractAddress
           );
 
-          return globalContract;
-        }
-
-        function connectButton_click() {
-          // Request permission from the user to access their accounts in Metamask
-          // https://docs.alchemy.com/alchemy/documentation/alchemy-web3#note-on-using-metamask
-          if (!window.ethereum || !window.ethereum.isMetaMask) {
-            alert(
-              "You don't have Metamask installed. Go to https://metamask.io now to install."
-            );
-            return;
-          }
-
-          window.ethereum
-            .enable()
-            .then((accounts) => {
-              // Metamask is ready to go!
-              connectButton.removeEventListener("click", connectButton_click);
-              [connectButton, mintButton].forEach((button) =>
-                button.classList.toggle("hidden")
-              );
-            })
-            .catch((reason) => {
-              alert("You rejected the Metamask connection. Try again.");
-            });
-        }
-
-        function mintButton_click() {
-          getContract()
-            .methods.mint(1)
-            .send({
-              from: window.ethereum.selectedAddress,
-              value: globalWeb3.utils.toWei("0.073", "ether"),
-            })
-            .then(function (foo) {
-              // example foo: {
-              //   "blockHash": "0xc694a9b1fcc4df6c54675e042bf38f3d3661cce8f103b052312b191e61c6754f",
-              //   "blockNumber": 11086486,
-              //   "contractAddress": null,
-              //   "cumulativeGasUsed": 2835919,
-              //   "effectiveGasPrice": 2500000022,
-              //   "from": "0x664f6de6c2fb6df7cac37d774af64d11346f0cb7",
-              //   "gasUsed": 59547,
-              //   "logsBloom": "0x04000000000000400000000000000000000000000000000000000000000000000000000000000000000000000000200000000000000000000000000000000000000000000000000000000008040080000000000000000000000000000000000000000000028000000000000000000800000000000000000000000030000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000008000000000000000000000",
-              //   "status": true,
-              //   "to": "0x8cd228cd5633df1f2b0949a7a4bf516995206718",
-              //   "transactionHash": "0xa74f89b5bdee8494525e307d7d21aae664bc3c73b84e1a17b1a75f035225fcd0",
-              //   "transactionIndex": 7,
-              //   "type": "0x2",
-              //   "events": {
-              //     "Transfer": {
-              //       "address": "0x8CD228Cd5633Df1f2B0949A7A4Bf516995206718",
-              //       "blockNumber": 11086486,
-              //       "transactionHash": "0xa74f89b5bdee8494525e307d7d21aae664bc3c73b84e1a17b1a75f035225fcd0",
-              //       "transactionIndex": 7,
-              //       "blockHash": "0xc694a9b1fcc4df6c54675e042bf38f3d3661cce8f103b052312b191e61c6754f",
-              //       "logIndex": 3,
-              //       "removed": false,
-              //       "id": "log_22e02e13",
-              //       "returnValues": {
-              //         "0": "0x0000000000000000000000000000000000000000",
-              //         "1": "0x664f6De6C2FB6Df7cAC37d774af64d11346f0cb7",
-              //         "2": "2",
-              //         "from": "0x0000000000000000000000000000000000000000",
-              //         "to": "0x664f6De6C2FB6Df7cAC37d774af64d11346f0cb7",
-              //         "tokenId": "2"
-              //       },
-              //       "event": "Transfer",
-              //       "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-              //       "raw": {
-              //         "data": "0x",
-              //         "topics": [
-              //           "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
-              //           "0x0000000000000000000000000000000000000000000000000000000000000000",
-              //           "0x000000000000000000000000664f6de6c2fb6df7cac37d774af64d11346f0cb7",
-              //           "0x0000000000000000000000000000000000000000000000000000000000000002"
-              //         ]
-              //       }
-              //     }
-              //   }
-              // }
-            })
-            .catch(alert);
+          contract.methods.mint(1).send({
+            from: window.ethereum.selectedAddress,
+            value: web3.utils.toWei("0.073", "ether"),
+          });
         }
 
         connectButton.addEventListener("click", connectButton_click);
         mintButton.addEventListener("click", mintButton_click);
-
-        getContract()
-          .methods.totalSupply()
-          .call()
-          .then(function (totalSupply) {
-            totalSupplyElement.textContent = totalSupply;
-          })
-          .catch(alert);
       });
     </script>
   </body>
