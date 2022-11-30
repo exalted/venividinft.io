@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=320, user-scalable=yes"
+      id="wixMobileViewport"
+    />
+
+    <title>V E N I&nbsp;&nbsp;V I D I&nbsp;&nbsp;N F T</title>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?checksum=a7291add457bf06263b93d9b959ea016" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?checksum=131c39f8eaed4e9d20165f27e96cbb7a" />
+    <link rel="shortcut icon" href="/favicon.ico?checksum=3ffc160e1fbda332042fe777b3f8136f" />
+  </head>
+  <body>
+    <style>
+      iframe {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        z-index: 999999;
+      }
+
+      #desktop {
+        display: none;
+      }
+      @media (min-width: 1024px) {
+        #desktop {
+          display: block;
+        }
+        #mobile {
+          display: none;
+        }
+      }
+    </style>
+    <iframe src="/desktop.html" id="desktop"></iframe>
+    <iframe src="/mobile.html" id="mobile"></iframe>
+  </body>
+</html>
